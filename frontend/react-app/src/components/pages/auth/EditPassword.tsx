@@ -1,14 +1,19 @@
 import { Box, Button, Center, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack } from "@chakra-ui/react"
-import { useMessage } from "customHooks/message/useMessage"
-import { getCurrentUser, updatePassword } from "lib/api/auth/auth"
 import { useForm } from "react-hook-form"
 import { BeatLoader } from "react-spinners"
 import { useRecoilState } from "recoil"
+import { memo, VFC } from "react"
+
+import { useSignOut } from "customHooks/auth/useSignOut"
+import { useMessage } from "customHooks/message/useMessage"
+import { getCurrentUser, updatePassword } from "lib/api/auth/auth"
 import { CurrentUser } from "store/auth/Auth"
 import { EditPasswordUpdate } from "types/form/FormInputs"
 
-const EditPassword = () => {
+const EditPassword: VFC = memo(() => {
     const [ currentUser, setCurrentUser ] = useRecoilState(CurrentUser)
+    const { executionSignOut } = useSignOut('パスワードを更新しました。再度ログインしてください')
+    const { showMessage } = useMessage()
     const { register, handleSubmit, formState: {errors}, formState, getValues } = useForm<EditPasswordUpdate>({
         mode: 'all',
         defaultValues: {
@@ -17,33 +22,29 @@ const EditPassword = () => {
         }
     })
 
-    const { showMessage } = useMessage()
 
     const handleUpdatePassword = async(data: EditPasswordUpdate) => {
-        const params: EditPasswordUpdate = {
-            password: data.password,
-            passwordConfirmation: data.passwordConfirmation
-        }
         const { password, passwordConfirmation } = data
         const formData = new FormData()
         formData.set('password', password)
         formData.set('password_confirmation', passwordConfirmation)
         try {
             const res = await updatePassword(formData)
-            console.log(res);
             
-            // if () {
+            if(res.status === 200) {
                 const user = await getCurrentUser()
                 setCurrentUser(user?.data.data)
-                showMessage({title: 'パスワードを更新しました。再度ログインしてください', status: 'success'})
-            // } else {
-            // }
+                await executionSignOut()
+            } else {
+                showMessage({title: 'パスワードの更新に失敗しました。', status: 'error'})
+                
+            }
         } catch (error) {
-            console.log(error)
-            showMessage({title: 'プロフィールの更新に失敗しました。', status: 'error'})
+            showMessage({title: 'パスワードの更新に失敗しました。', status: 'error'})
         }
         
     }
+    
     return (
         <>
             <Flex justify='center' align='center' h='100%' mt='90px'>
@@ -81,6 +82,6 @@ const EditPassword = () => {
 
         </>
     )
-}
+})
 
 export default EditPassword

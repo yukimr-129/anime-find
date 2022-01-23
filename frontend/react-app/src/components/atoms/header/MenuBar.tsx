@@ -1,15 +1,16 @@
-import React, { memo } from "react"
-import { Drawer, DrawerContent, DrawerOverlay, DrawerHeader, DrawerBody, useDisclosure, Box, Text, Divider, DrawerCloseButton, Flex, IconButton } from "@chakra-ui/react"
-import { RiMenuFoldLine } from "react-icons/ri";
+import React, { memo, VFC } from "react"
+
+import { Drawer, DrawerContent, DrawerOverlay, DrawerHeader, DrawerBody, useDisclosure, Box, Divider, DrawerCloseButton, Flex, IconButton } from "@chakra-ui/react"
+import { useRecoilValue } from "recoil";
+
 import { HamburgerIcon } from '@chakra-ui/icons'
 import { Link } from "react-router-dom"
-import { useRecoilValue } from "recoil";
 import { CurrentUser } from "store/auth/Auth";
 
-const MenuBar = memo(() => {
+const MenuBar: VFC = memo(() => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const current_user = useRecoilValue(CurrentUser)
-    const id = current_user ? current_user.id : ''
+    const id = current_user?.id
 
     return (
         <>
@@ -40,7 +41,7 @@ const MenuBar = memo(() => {
                             </Box>
                             <Divider />
                             <Box w="100%" p='16px 24px' _hover={{opacity: 0.8, backgroundColor: '#d7d7d8'}}>
-                                <Link to={`like/${id}`} onClick={onClose}>お気に入りアニメ</Link>
+                                <Link to={`/like/${id}`} onClick={onClose}>お気に入りアニメ</Link>
                             </Box>
                         </DrawerBody>
                     </DrawerContent>

@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   has_many :favorites, dependent: :destroy
+  has_many :reviews
 
   mount_uploader :image, ImageUploader
 

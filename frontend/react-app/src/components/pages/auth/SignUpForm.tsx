@@ -1,18 +1,18 @@
+import { memo, useCallback, VFC } from "react"
+
 import { Box, Flex, Heading,  VStack, FormControl, FormLabel, Input, FormErrorMessage, Button, Divider } from "@chakra-ui/react"
-import Header from "components/organisms/Header"
-import { useMessage } from "customHooks/message/useMessage"
 import Cookies from "js-cookie"
-import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { useHistory } from "react-router-dom"
 import { BeatLoader } from "react-spinners"
 import { useSetRecoilState } from "recoil"
 
+import { useMessage } from "customHooks/message/useMessage"
 import { signUp } from "lib/api/auth/auth"
 import { CurrentUser, IsSignedIn } from "store/auth/Auth"
 import { SignUpFormInputs } from "types/form/FormInputs"
 
-const SignUpForm = () => {
+const SignUpForm: VFC = memo(() => {
     const setIsSignedIn = useSetRecoilState(IsSignedIn)
     const setCurrentUser = useSetRecoilState(CurrentUser)
     const history = useHistory()
@@ -27,8 +27,6 @@ const SignUpForm = () => {
             passwordConfirmation: ''
           }
     })
-
-    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
     const handleOnSubmit = async(data: SignUpFormInputs) => {
         const params: SignUpFormInputs = {
@@ -46,7 +44,6 @@ const SignUpForm = () => {
                 Cookies.set("_access_token", res.headers["access-token"])
                 Cookies.set("_client", res.headers["client"])
                 Cookies.set("_uid", res.headers["uid"])
-                console.log(res);
                 
                 setIsSignedIn(true)
                 setCurrentUser(res.data.data)
@@ -63,7 +60,6 @@ const SignUpForm = () => {
 
     return (
         <>
-            {/* <Header /> */}
             <Flex justify='center' align='center' h='100%' mt='90px'>
                 <Box bg='white' w={{base: '90%', md: '2xl'}} p={4} borderRadius='10px' shadow='md'>
                     <Heading as='h1' size='lg' textAlign='center'>新規登録</Heading>
@@ -74,7 +70,6 @@ const SignUpForm = () => {
                                 <FormLabel>ユーザーネーム</FormLabel>
                                 <Input 
                                     type='text'
-                                    // name='email' 
                                     {...register('name', { required: true, maxLength: 10})}
                                 />
                                 <FormErrorMessage>
@@ -86,7 +81,6 @@ const SignUpForm = () => {
                                 <FormLabel>メールアドレス</FormLabel>
                                 <Input 
                                     type='email'
-                                    // name='email' 
                                     placeholder='test@example.com' 
                                     {...register('email', { required: 'メールアドレスは必須です。', pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'メールアドレス形式で入力してください。'}, })}
                                 />
@@ -98,7 +92,6 @@ const SignUpForm = () => {
                                 <FormLabel>パスワード</FormLabel>
                                 <Input 
                                     type='password' 
-                                    // name='password'
                                     {...register('password', {required: 'パスワードは必須です。', pattern: {value: /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,100}$/, message: '半角英小文字大文字数字をそれぞれ1種類以上含む8文字以上で設定してください。'}})}
                                 />
                                 <FormErrorMessage>
@@ -109,7 +102,6 @@ const SignUpForm = () => {
                                 <FormLabel>確認用パスワード</FormLabel>
                                 <Input 
                                     type='password' 
-                                    // name='password'
                                     {...register('passwordConfirmation', {required: true, validate: value => value === getValues('password')})}
                                 />
                                 <FormErrorMessage>
@@ -124,6 +116,6 @@ const SignUpForm = () => {
             </Flex>  
         </>
     )
-}
+})
 
 export default SignUpForm

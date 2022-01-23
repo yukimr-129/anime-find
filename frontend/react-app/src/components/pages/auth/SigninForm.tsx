@@ -6,15 +6,13 @@ import { useForm } from "react-hook-form"
 import { useHistory } from "react-router-dom";
 import { BeatLoader } from "react-spinners"
 import { useSetRecoilState } from "recoil";
-import { useCallback } from "react";
+import { memo, useCallback, VFC } from "react";
 
 import { CurrentUser, IsSignedIn } from "store/auth/Auth";
 import { SignInFormInputs } from "types/form/FormInputs";
 
 
-const SigninForm = () => {
-    // const [ email, setEmail] = useState('')
-    // const [ password, setPassword] = useState('')
+const SigninForm: VFC = memo(() => {
     const setIsSignedIn = useSetRecoilState(IsSignedIn)
     const setCurrentUser = useSetRecoilState(CurrentUser)
     const history = useHistory()
@@ -27,8 +25,6 @@ const SigninForm = () => {
             password: '',
           }
     })
-
-    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
     const handleOnSubmit = async(data: SignInFormInputs) => {
         const params: SignInFormInputs = {
@@ -62,47 +58,41 @@ const SigninForm = () => {
 
     return (
         <>
-            {/* <Header /> */}
-            {/* <Box> */}
-                <Flex justify='center' align='center' h='100%' mt='90px'>
-                    <Box bg='white' w={{base: '90%', md: '2xl'}} p={4} borderRadius='10px' shadow='md'>
-                        <Heading as='h1' size='lg' textAlign='center'>ログイン</Heading>
-                        <Divider my={4}/>
-                        <form onSubmit={handleSubmit(handleOnSubmit)}>
-                            <VStack spacing={5}>
-                                <FormControl id='email' isRequired isInvalid={errors.email ? true : false}>
-                                    <FormLabel>メールアドレス</FormLabel>
-                                    <Input 
-                                        type='email'
-                                        // name='email' 
-                                        placeholder='test@example.com' 
-                                        {...register('email', { required: 'メールアドレスは必須です。', pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "メールアドレス形式で入力してください。"}, })}
-                                    />
-                                    <FormErrorMessage>
-                                        {errors.email && errors.email.message}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <FormControl id='password' isRequired isInvalid={errors.password ? true : false}>
-                                    <FormLabel>パスワード</FormLabel>
-                                    <Input 
-                                        type='password' 
-                                        // name='password'
-                                        {...register('password', {required: 'パスワードは必須です。'})}
-                                    />
-                                    <FormErrorMessage>
-                                        {errors.password && errors.password.message}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <Button type="submit" disabled={!formState.isValid} isLoading={formState.isSubmitting} w='100%' color='white' bg='blue.400' _hover={{opacity: 0.8}} spinner={<BeatLoader size={8} color="white" />}>ログイン</Button>
-                            </VStack>
-                        </form>
-                        
-                    </Box>
-                </Flex>  
-            {/* </Box> */}
-
+            <Flex justify='center' align='center' h='100%' mt='90px'>
+                <Box bg='white' w={{base: '90%', md: '2xl'}} p={4} borderRadius='10px' shadow='md'>
+                    <Heading as='h1' size='lg' textAlign='center'>ログイン</Heading>
+                    <Divider my={4}/>
+                    <form onSubmit={handleSubmit(handleOnSubmit)}>
+                        <VStack spacing={5}>
+                            <FormControl id='email' isRequired isInvalid={errors.email ? true : false}>
+                                <FormLabel>メールアドレス</FormLabel>
+                                <Input 
+                                    type='email'
+                                    placeholder='test@example.com' 
+                                    {...register('email', { required: 'メールアドレスは必須です。', pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "メールアドレス形式で入力してください。"}, })}
+                                />
+                                <FormErrorMessage>
+                                    {errors.email && errors.email.message}
+                                </FormErrorMessage>
+                            </FormControl>
+                            <FormControl id='password' isRequired isInvalid={errors.password ? true : false}>
+                                <FormLabel>パスワード</FormLabel>
+                                <Input 
+                                    type='password' 
+                                    {...register('password', {required: 'パスワードは必須です。'})}
+                                />
+                                <FormErrorMessage>
+                                    {errors.password && errors.password.message}
+                                </FormErrorMessage>
+                            </FormControl>
+                            <Button type="submit" disabled={!formState.isValid} isLoading={formState.isSubmitting} w='100%' color='white' bg='blue.400' _hover={{opacity: 0.8}} spinner={<BeatLoader size={8} color="white" />}>ログイン</Button>
+                        </VStack>
+                    </form>
+                    
+                </Box>
+            </Flex>  
         </>
     )
-}
+})
 
 export default SigninForm

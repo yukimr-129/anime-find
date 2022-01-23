@@ -1,5 +1,6 @@
+import { VFC, useState, useCallback, ChangeEvent, memo } from "react"
+
 import { IconButton, Box, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack, Image, Center } from "@chakra-ui/react"
-import { VFC, useState, useCallback, ChangeEvent } from "react"
 import { useForm } from "react-hook-form"
 import { MdPhotoCamera, MdCancel } from "react-icons/md";
 import { BeatLoader } from "react-spinners"
@@ -12,7 +13,7 @@ import { getCurrentUser, updateUserProfile } from "lib/api/auth/auth";
 import { useMessage } from "customHooks/message/useMessage";
 
 
-const UserProfile: VFC = () => {
+const UserProfile: VFC = memo(() => {
     const [ currentUser, setCurrentUser ] = useRecoilState(CurrentUser)
     const [ preview, setPreview ] = useState<string>('')
     const [ userImage, setUserImage ] = useState<string | null>(currentUser?.image?.url ?? null)
@@ -46,7 +47,6 @@ const UserProfile: VFC = () => {
     
             const imageData = await imageCompression(uploadImage, compressOptions)
             formData.set("image", imageData, uploadImage.name)
-            console.log(uploadImage)
         }else if(!uploadImage) {
             formData.set("image", '')
         }
@@ -61,7 +61,6 @@ const UserProfile: VFC = () => {
                 showMessage({title: 'プロフィールの更新に失敗しました。', status: 'error'})
             }
         } catch (error) {
-            console.log(error)
             showMessage({title: 'プロフィールの更新に失敗しました。', status: 'error'})
         }
     }
@@ -164,6 +163,6 @@ const UserProfile: VFC = () => {
             </Flex>
         </>
     )
-}
+})
 
 export default UserProfile

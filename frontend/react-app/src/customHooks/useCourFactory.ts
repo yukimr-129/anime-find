@@ -1,6 +1,7 @@
 import { useRecoilState } from "recoil"
 
 import { Cour } from '../store/Cour'
+import { ApiKeyValue } from '../store/ApiKeyValue'
 
 type CourFactory = () => {
     current_cour: number;
@@ -17,7 +18,7 @@ export const useCourFactory: CourFactory = () => {
 
 
     //現在のクール
-    const current_cour = Math.ceil((new Date()).getMonth() / 3)
+    const current_cour = Math.ceil(((new Date()).getMonth() + 1) / 3)
     const defalt_cour = cours_detail[current_cour - 1]
 
     //選択したクール
@@ -28,12 +29,7 @@ export const useCourFactory: CourFactory = () => {
     const season = new Map<string, string>([['1期（冬期）', 'winter'], ['2期（春期）', 'spring'], ['3期（夏期）', 'summer'], ['4期（秋期）', 'autumn']])
     const select_season = season.get(selectCour)
     const current_season = season.get(defalt_cour)
-    
-    // const handleChangeCour: handleChange = useCallback((e) => {
-    //     e.preventDefault()
-    //     setSelectCour(e.target.value)
-    // }, [selectCour])
-    
+        
     //セレクト
     const cours: string[] = [];
     for (var i = 0; i < cours_detail.length; i++) {

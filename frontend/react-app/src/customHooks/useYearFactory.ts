@@ -4,21 +4,16 @@ import { Year } from '../store/Year'
 
 type YearFactory = () => {
     current_year: number;
-    year: number[];
+    years: number[];
 }
 export const useYearFactory: YearFactory = () => {
     const [ selectYear, setSelectyear ] = useRecoilState(Year)
     const current_year = (new Date()).getFullYear();
-    const year: number[] = []
-
-    // const handleChangeYear: handleChange = useCallback((e) => {
-    //     e.preventDefault()
-    //     setSelectyear(e.target.value)
-    // }, [selectYear])
+    const years: number[] = []
 
     for (let y = current_year; y >= 2014; y--) {
-        year.push(y)
+        years.push(y)
     }
 
-    return { current_year, year }
+    return { current_year, years }
 }
