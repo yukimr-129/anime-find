@@ -1,5 +1,6 @@
-import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
+
+import { ChakraProvider } from '@chakra-ui/react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { MutableSnapshot, RecoilRoot } from 'recoil';
@@ -10,11 +11,9 @@ import theme from './defaultStyle/theme';
 import RecoilStatePersist from './RecoilStatePersist';
 import { CurrentUser, IsSignedIn } from './store/auth/Auth'
 import { AuthLoding } from './store/loding/AuthLoding'
+import { ScrollToTop } from 'util/ScrollToTop';
 
 const initializeState = (mutableSnapshot: MutableSnapshot) => {
-  // for(const [key, value] of Storage.entries()) {
-  //   set(myLookupOfAtomWithKey(key), JSON.parse(value).value);
-  // }
   const currentUser = localStorage.getItem('CurrentUser');
   const isSignedIn = localStorage.getItem('IsSignedIn');
   const authLoding = localStorage.getItem('AuthLoding');
@@ -26,14 +25,13 @@ const initializeState = (mutableSnapshot: MutableSnapshot) => {
   }
 }
 
-
-
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <RecoilRoot initializeState={initializeState}>
         <RecoilStatePersist />
         <ChakraProvider theme={theme}>
+          <ScrollToTop />
           <App />
         </ChakraProvider>
       </RecoilRoot>

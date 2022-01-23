@@ -2,6 +2,7 @@ import { FormLabel, Select } from "@chakra-ui/react"
 import { VFC } from "react"
 import { useCallback } from 'react'
 import { useRecoilState } from "recoil"
+import { ApiKeyValue } from "store/ApiKeyValue"
 
 import { useCourFactory } from "../../../customHooks/useCourFactory"
 import { Cour } from '../../../store/Cour'
@@ -11,11 +12,16 @@ const CourInput: VFC = () => {
     
     const { cours } = useCourFactory()
     const [ selectCour, setSelectCour ] = useRecoilState(Cour)
+    const [ apiKeyValue, setApiKeyValue] = useRecoilState(ApiKeyValue)
 
     const handleChangeCour: handleChange = useCallback((e) => {
         e.preventDefault()
+        const season = new Map<string, string>([['1期（冬期）', 'winter'], ['2期（春期）', 'spring'], ['3期（夏期）', 'summer'], ['4期（秋期）', 'autumn']])
+        const select_season = season.get(e.target.value)
+        
         setSelectCour(e.target.value)
-    }, [selectCour])
+        setApiKeyValue({...apiKeyValue, cour: select_season})
+    }, [apiKeyValue])
     
     return (
         <>

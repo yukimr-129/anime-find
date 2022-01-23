@@ -1,20 +1,22 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState, VFC } from 'react'
+
 import { Redirect, Route, Switch } from "react-router-dom"
+import { useRecoilState } from "recoil"
 
 import TopPage from "../components/pages/TopPage"
 import SignUpForm from '../components/pages/auth/SignUpForm'
 import SigninForm from '../components/pages/auth/SigninForm'
 import { AuthLoding } from "store/loding/AuthLoding"
 import { CurrentUser, IsSignedIn } from "store/auth/Auth"
-import { useRecoilState } from "recoil"
 import { getCurrentUser } from "lib/api/auth/auth"
 import CommonLayout from 'components/templates/CommonLayout'
 import FavoriteAnime from 'components/pages/favorites/FavoriteAnime'
 import UserProfile from 'components/pages/auth/UserProfile'
 import EditPassword from 'components/pages/auth/EditPassword'
+import ReviewPage from 'components/pages/review/ReviewPage'
+import Page404 from 'components/pages/error/Page404'
 
-const Router = () => {
-    const [ loding, setLoding ] = useState(true)
+const Router: VFC = memo(() => {
     const [ authLoding, setAuthLoding] = useRecoilState(AuthLoding)
     const [ isSignedIn, setIsSignedIn ] = useRecoilState(IsSignedIn)
     const [ currentUser, setCurrentUser ] = useRecoilState(CurrentUser)
@@ -24,24 +26,19 @@ const Router = () => {
     const handleGetCurrentUser = async () => {
         try {
         const res = await getCurrentUser()
-        console.log(res);
             
             if (res?.data.is_login === true) {
                 setIsSignedIn(true)
                 setCurrentUser(res?.data.data)
-                console.log(currentUser)
             } else {
                 setIsSignedIn(false)
                 setCurrentUser(undefined)
-                console.log("No current user")
             }
-        } catch (err) {
-            console.log(err)
+        } catch (error) {
+            console.error(error)
         }
         
         setAuthLoding(false)
-        console.log(authLoding);
-        console.log(isSignedIn);
     }
 
     useEffect(() => {
@@ -61,33 +58,37 @@ const Router = () => {
                     
                 {!authLoding && isSignedIn ? (
                     <>
-                        <Route exact path='/' render={() => (
-                            <TopPage />
-                        )} />
-                        <Route path='/like/:user_id' render={() => (
-                            <FavoriteAnime />
-                        )} />
-                        <Route path='/profile/:user_id' render={() => (
-                            <UserProfile />
-                        )} />
-                        <Route path='/edit-password/:user_id' render={() => (
-                            <EditPassword />
-                        )} />
+                        <Switch>
+                            <Route exact path='/' render={() => (
+                                <TopPage />
+                            )} />
+                            <Route path='/like/:user_id' render={() => (
+                                <FavoriteAnime />
+                            )} />
+                            <Route path='/review/:anime_id' render={() => (
+                                <ReviewPage />
+                            )} />
+                            <Route path='/profile/:user_id' render={() => (
+                                <UserProfile />
+                            )} />
+                            <Route path='/edit-password/:user_id' render={() => (
+                                <EditPassword />
+                            )} />
+                            <Route path='*' render={() => (
+                                <Page404 />
+                            )} />
+                        </Switch>
                     </>
                 ) : (
                     <Redirect to="/signin" />
                 )}
 
-                {/* <Route path='' render={() => (
-                    <Login />
-                )} /> */}
-                {/* <Route path='' render={() => (
-                    <MyAccount />
-                )} /> */}
-
+                <Route path="*" render={() => (
+                    <Page404 />
+                )} />
             </Switch>
         </CommonLayout>
     )
-}
+})
 
 export default Router

@@ -19,3 +19,16 @@ export type EditPasswordUpdate = {
     password: string;
     passwordConfirmation: string;
 }
+
+export type Submitreview = {
+    title: string;
+    comment: string;
+}
+
+export type Submitreviews = {
+    user_id: number;
+    title: string;
+    comment: string;
+    rate: number;
+    anime_id: number;
+}

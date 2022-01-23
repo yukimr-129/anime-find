@@ -1,14 +1,15 @@
-import { Box, Center, Text, Wrap, WrapItem } from "@chakra-ui/react";
-import { log } from "console";
-import Cookies from "js-cookie";
-import { client } from "lib/api/client";
 import { useEffect, VFC } from "react";
+
+import { Box, Center, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import { useRecoilState } from "recoil";
+
 import { FavoriteAnimeLists } from "store/FavoriteAnimeList";
 import { IsFavoriteLike } from "store/IsFavoriteLike";
 import { Loding } from "store/loding/Loding";
 import { DefaultSpiner } from "util/DefaultSpiner";
 import FavoriteAnimeCard from "./FavoriteAnimeCard";
+import { getFavorite } from "lib/api/favorite/favorite";
+import { FavoriteType } from "types/favoriteAnime/FavoriteAnimeType";
 
 const FavoriteAnime: VFC = () => {
     const [ loding, setLoding ] = useRecoilState(Loding)
@@ -20,20 +21,21 @@ const FavoriteAnime: VFC = () => {
         setLoding(true)
         const getFavoriteAnime = async() => {
             try {
-                const FavoriteAnime = await client.get('/favorites', { headers: {
-                    "access-token": Cookies.get("_access_token"),
-                    "client": Cookies.get("_client"),
-                    "uid": Cookies.get("_uid")
-                }})
-                console.log(FavoriteAnime)
-                setFavoriteAnimeList(FavoriteAnime.data)
-                setIsFavoriteLike(true)
-                setLoding(false)
+                const res = await getFavorite()
+                if(res.status === 200) {
+                    const favoriteAnimeData: FavoriteType[] = res.data
+
+                    setFavoriteAnimeList(favoriteAnimeData)
+                    setIsFavoriteLike(true)
+                    setLoding(false)
+                } else {
+                    console.error('status error')
+                }
             } catch (error) {
-                throw error
+                console.error(error)
             }
         }
-        if(isMounted) getFavoriteAnime()
+        isMounted && getFavoriteAnime()
 
         return () => {
             isMounted = false
@@ -49,7 +51,7 @@ const FavoriteAnime: VFC = () => {
                     </Text>
                 </Box>
                 {loding ? (
-                    <Center mt='100px'>
+                    <Center p='100px 0 100px 0'>
                         <DefaultSpiner />
                     </Center>
                 ) : (

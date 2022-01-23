@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_07_114054) do
+ActiveRecord::Schema.define(version: 2022_01_19_150821) do
 
   create_table "favorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
@@ -22,7 +22,19 @@ ActiveRecord::Schema.define(version: 2021_09_07_114054) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "api_id"
+    t.string "media_text"
     t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
+  create_table "reviews", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "title", null: false
+    t.text "comment", null: false
+    t.integer "rate", null: false
+    t.integer "anime_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -51,4 +63,5 @@ ActiveRecord::Schema.define(version: 2021_09_07_114054) do
   end
 
   add_foreign_key "favorites", "users"
+  add_foreign_key "reviews", "users"
 end

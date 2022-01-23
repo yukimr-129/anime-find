@@ -1,6 +1,7 @@
-import { Flex, Box, Button, HStack } from "@chakra-ui/react"
-import { VFC } from "react"
-import { useRecoilState } from "recoil"
+import { memo, VFC } from "react"
+
+import { Flex, Box, Button, HStack, LinkBox } from "@chakra-ui/react"
+import { useRecoilState, useRecoilValue } from "recoil"
 import Cookies from "js-cookie"
 
 import Logo from "../atoms/header/Logo"
@@ -10,35 +11,36 @@ import { AuthLoding } from "store/loding/AuthLoding"
 import { useHistory } from "react-router-dom"
 import { signOut } from "lib/api/auth/auth"
 import { useMessage } from "customHooks/message/useMessage"
+import { useSignOut } from "customHooks/auth/useSignOut"
 
-const Header: VFC = () => {
+const Header: VFC = memo(() => {
     const history = useHistory()
-    const [ isSignedIn, setIsSignedIn ] = useRecoilState(IsSignedIn)
+    const isSignedIn = useRecoilValue(IsSignedIn)
+    const currentUser = useRecoilValue(CurrentUser)
     const [ authLoding, setAuthLoding] = useRecoilState(AuthLoding)
-    const [ currentUser, setCurrentUser] = useRecoilState(CurrentUser)
+    const { executionSignOut } = useSignOut('ログアウトしました')
     const { showMessage } = useMessage()
 
     //ログアウト
     const handleSignOut = async(e: React.MouseEvent<HTMLButtonElement>) => {
         try {
-            const res = await signOut()
-            console.log(res);
+            // const res = await signOut()
             
-            if (res.data.success === true){
-                 // サインアウト時には各Cookieを削除
-                Cookies.remove("_access_token")
-                Cookies.remove("_client")
-                Cookies.remove("_uid")
+            // if (res.data.success === true){
+            //      // サインアウト時には各Cookieを削除
+            //     Cookies.remove("_access_token")
+            //     Cookies.remove("_client")
+            //     Cookies.remove("_uid")
 
-                setIsSignedIn(false)
-                setAuthLoding(true)
-                console.log('確認');
+            //     setIsSignedIn(false)
+            //     setAuthLoding(true)
                 
-                setCurrentUser(undefined)
-                history.push("/signin")
+            //     setCurrentUser(undefined)
+            //     history.push('/signin')
 
-                showMessage({title: 'ログアウトしました', status: 'info'})
-            }
+            //     showMessage({title: 'ログアウトしました', status: 'info'})
+            // }
+            await executionSignOut()
             
         } catch (error) {
             showMessage({title: 'ログアウトに失敗しました', status: 'error'})
@@ -47,12 +49,12 @@ const Header: VFC = () => {
 
     //ログイン
     const signInHistory = () => {
-        history.push({pathname: '/signin'})
+        history.push('/signin')
     }
 
     //新規登録
     const signUpHistory = () => {
-        history.push({pathname: '/signup'})
+        history.push('/signup')
     }
 
     return (
@@ -64,19 +66,7 @@ const Header: VFC = () => {
                 </Box>
                 <Flex justify='space-between' align='center'>
                     <HStack spacing={5}>
-                        {/* { !authLoding ? (
-                            isSignedIn ? (
-                                    <Button size='xs' p={4} colorScheme="red" onClick={handleSignOut}>ログアウト</Button>
-                            ) : (
-                                <>
-                                    <Button size='xs' p={4} colorScheme="blue" onClick={signInHistory}>ログイン</Button>
-                                    <Button size='xs' p={4} colorScheme="teal" onClick={signUpHistory}>新規登録</Button>
-                                </>
-                            )
-                        ) : (
-                            <></>
-                        )} */}
-                        { isSignedIn ? (
+                        { isSignedIn && currentUser ? (
                             <>
                                 <HStack>
                                     <Button size='xs' p={{base: 2, md: 4}} colorScheme="red" onClick={handleSignOut}>ログアウト</Button>
@@ -96,6 +86,6 @@ const Header: VFC = () => {
         </Box>
         </>
     )
-}
+})
 
 export default Header
