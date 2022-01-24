@@ -1,5 +1,6 @@
 FROM ruby:3.0
 
+ARG WORKDIR
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
 
 ENV APP_PATH /myapp
