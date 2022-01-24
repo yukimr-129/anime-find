@@ -1,0 +1,9 @@
+setup:
+  config:
+    NODE_ENV: production
+    NPM_CONFIG_PRODUCTION: false
+build:
+  docker:
+    web: Dockerfile
+run:
+  web: yarn run start
