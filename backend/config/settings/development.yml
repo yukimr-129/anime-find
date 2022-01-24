@@ -1,3 +1,0 @@
-web:
-  url_options_front: 'http://localhost:3000'
-  url_options_backend: 'http://localhost:3001'
