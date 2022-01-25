@@ -41,13 +41,13 @@
 /backend/.env
 /backend/log/*
 /backend/tmp/*
-/backend!/log/.keep
-/backend!/tmp/.keep
+!/backend/log/.keep
+!/backend/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
 /backend/tmp/pids/*
-/backend!/tmp/pids/
-/backend!/tmp/pids/.keep
+!/backend/tmp/pids/
+!/backend/tmp/pids/.keep
 
 # Ignore uploaded files in development.
 /backend/storage/*
