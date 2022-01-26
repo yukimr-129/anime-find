@@ -10,6 +10,7 @@ import { DefaultSpiner } from "util/DefaultSpiner";
 import FavoriteAnimeCard from "./FavoriteAnimeCard";
 import { getFavorite } from "lib/api/favorite/favorite";
 import { FavoriteType } from "types/favoriteAnime/FavoriteAnimeType";
+import Head from "meta/Head";
 
 const FavoriteAnime: VFC = () => {
     const [ loding, setLoding ] = useRecoilState(Loding)
@@ -18,7 +19,7 @@ const FavoriteAnime: VFC = () => {
 
     useEffect(() => {
         let isMounted = true
-        setLoding(true)
+        isMounted && setLoding(true)
         const getFavoriteAnime = async() => {
             try {
                 const res = await getFavorite()
@@ -44,6 +45,7 @@ const FavoriteAnime: VFC = () => {
 
     return (
         <>
+            <Head title='anime-find | お気に入りアニメ'/>
             <Box w={{base: '90%', md: '70%'}} h='100%' bg='#ffff' m='100px auto 20px auto' borderRadius='10px'>
                 <Box justify='center' align='center' m='30px 10px 0'>
                     <Text fontWeight='700' fontSize='1.17em' pt='30px'>

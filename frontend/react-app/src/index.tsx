@@ -12,6 +12,7 @@ import RecoilStatePersist from './RecoilStatePersist';
 import { CurrentUser, IsSignedIn } from './store/auth/Auth'
 import { AuthLoding } from './store/loding/AuthLoding'
 import { ScrollToTop } from 'util/ScrollToTop';
+import { HelmetProvider } from 'react-helmet-async';
 
 const initializeState = (mutableSnapshot: MutableSnapshot) => {
   const currentUser = localStorage.getItem('CurrentUser');
@@ -31,8 +32,10 @@ ReactDOM.render(
       <RecoilRoot initializeState={initializeState}>
         <RecoilStatePersist />
         <ChakraProvider theme={theme}>
-          <ScrollToTop />
-          <App />
+          <HelmetProvider>
+            <ScrollToTop />
+            <App />
+          </HelmetProvider>
         </ChakraProvider>
       </RecoilRoot>
     </BrowserRouter>

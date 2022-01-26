@@ -11,6 +11,7 @@ import { CurrentUser } from "store/auth/Auth";
 import { UserProfileUpdate } from "types/form/FormInputs"
 import { getCurrentUser, updateUserProfile } from "lib/api/auth/auth";
 import { useMessage } from "customHooks/message/useMessage";
+import Head from "meta/Head";
 
 
 const UserProfile: VFC = memo(() => {
@@ -86,6 +87,7 @@ const UserProfile: VFC = memo(() => {
 
     return (
         <>
+            <Head title='anime-find | ユーザー情報更新'/>
             <Flex justify='center' align='center' h='100%' mt='90px'>
                 <Box bg='white' w={{base: '90%', md: '2xl'}} p={4} borderRadius='10px' shadow='md'>
                     <Heading as='h1' size='lg' textAlign='center'>プロフィール編集</Heading>

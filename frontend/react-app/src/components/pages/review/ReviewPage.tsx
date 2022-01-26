@@ -5,6 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 import ReviewList from "components/organisms/ReviewList";
 import { useGetAnimeReviews } from "customHooks/useGetAnimeReviews";
+import Head from "meta/Head";
 
 const ReviewPage: VFC = memo(() => {
     const [ loadIndex, setLoadIndex ] = useState(4)
@@ -51,32 +52,35 @@ const ReviewPage: VFC = memo(() => {
 
 
     return (
-        <Box w={{base: '80%', md: '60%'}} h='100%' bg='#ffff' m='100px auto 20px auto' borderRadius='10px'>
-            <Box w='100%'>
-                <Image src={image} borderRadius='10px 10px 0 0' w='100%' objectFit='cover'/>
-            </Box>
+        <>
+            <Head title='anime-find | レビュー'/>
+            <Box w={{base: '80%', md: '60%'}} h='100%' bg='#ffff' m='100px auto 20px auto' borderRadius='10px'>
+                <Box w='100%'>
+                    <Image src={image} borderRadius='10px 10px 0 0' w='100%' objectFit='cover'/>
+                </Box>
 
-            <Box p={3}>
-                <Text as='h2' fontWeight='bold'>レビュー一覧</Text>
-                <VStack spacing={5} align='start'>
-                    {reviewsList ? (
-                        reviewsList.slice(0, loadIndex).map((review, key) => (
-                            <ReviewList key={key} review={review}/>
-                        ))
-                        ) : null }
-                </VStack>
-                <Center mt={10}>
-                    <Button
-                    colorScheme='teal'
-                    disabled={isEmpty}
-                    onClick={displayMore}
-                    variant="solid"
-                    >
-                        さらに表示
-                    </Button>
-                </Center>
+                <Box p={3}>
+                    <Text as='h2' fontWeight='bold'>レビュー一覧</Text>
+                    <VStack spacing={5} align='start'>
+                        {reviewsList ? (
+                            reviewsList.slice(0, loadIndex).map((review, key) => (
+                                <ReviewList key={key} review={review}/>
+                            ))
+                            ) : null }
+                    </VStack>
+                    <Center mt={10}>
+                        <Button
+                        colorScheme='teal'
+                        disabled={isEmpty}
+                        onClick={displayMore}
+                        variant="solid"
+                        >
+                            さらに表示
+                        </Button>
+                    </Center>
+                </Box>
             </Box>
-        </Box>
+        </>
     )
 })
 

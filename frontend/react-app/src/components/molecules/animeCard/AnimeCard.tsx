@@ -18,6 +18,7 @@ import ReactStars from 'react-stars';
 import { useGetReviewCount } from 'customHooks/useGetReviewCount';
 import { IconContext } from 'react-icons/lib';
 import { cleateFavorite, confirmFavorite, deleteFavorite } from 'lib/api/favorite/favorite';
+import Head from 'meta/Head';
 
 type Props = {
     animeList: AnnictApiType;
@@ -109,6 +110,7 @@ const AnimeCard: VFC<Props> = memo((props) => {
 
     return (
         <>
+            <Head title='anime-find | アニメの検索アプリ'/>
             <Box w={{base: '300px', md: '500px'}} h={{base: '270px', md: '360px'}} bg='white' borderRadius='10px' m='15px 5px' p='0 0 10px 0' border='solid 1px #e0e0e0' position='relative'>
                 <Box position='absolute' top='10px' right='10px' _hover={{opacity: 0.9}} >
                     <Link as='a' href={`${process.env.REACT_APP_TWITTER_URL}${animeList.twitter_username}`} target='_blank'>

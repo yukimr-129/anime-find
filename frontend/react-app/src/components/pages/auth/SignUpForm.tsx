@@ -11,6 +11,7 @@ import { useMessage } from "customHooks/message/useMessage"
 import { signUp } from "lib/api/auth/auth"
 import { CurrentUser, IsSignedIn } from "store/auth/Auth"
 import { SignUpFormInputs } from "types/form/FormInputs"
+import Head from "meta/Head"
 
 const SignUpForm: VFC = memo(() => {
     const setIsSignedIn = useSetRecoilState(IsSignedIn)
@@ -60,6 +61,7 @@ const SignUpForm: VFC = memo(() => {
 
     return (
         <>
+            <Head title='anime-find | 新規登録'/>
             <Flex justify='center' align='center' h='100%' mt='90px'>
                 <Box bg='white' w={{base: '90%', md: '2xl'}} p={4} borderRadius='10px' shadow='md'>
                     <Heading as='h1' size='lg' textAlign='center'>新規登録</Heading>

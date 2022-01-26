@@ -10,6 +10,7 @@ import { memo, useCallback, VFC } from "react";
 
 import { CurrentUser, IsSignedIn } from "store/auth/Auth";
 import { SignInFormInputs } from "types/form/FormInputs";
+import Head from "meta/Head";
 
 
 const SigninForm: VFC = memo(() => {
@@ -57,7 +58,8 @@ const SigninForm: VFC = memo(() => {
     }
 
     return (
-        <>
+        <>  
+            <Head title='anime-find | ログイン'/>
             <Flex justify='center' align='center' h='100%' mt='90px'>
                 <Box bg='white' w={{base: '90%', md: '2xl'}} p={4} borderRadius='10px' shadow='md'>
                     <Heading as='h1' size='lg' textAlign='center'>ログイン</Heading>
