@@ -1,4 +1,6 @@
+/auth https://anime-find-api.herokuapp.com/api/v1 :splat 200
 /auth/* https://anime-find-api.herokuapp.com/api/v1 :splat 200
+/favorites https://anime-find-api.herokuapp.com/api/v1 :splat 200
 /favorites/* https://anime-find-api.herokuapp.com/api/v1 :splat 200
 /reviews/* https://anime-find-api.herokuapp.com/api/v1 :splat 200
 /* /index.html 200
