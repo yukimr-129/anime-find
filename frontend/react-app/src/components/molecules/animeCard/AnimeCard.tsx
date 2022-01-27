@@ -10,7 +10,7 @@ import { FaTwitter } from "react-icons/fa";
 
 import { AnnictApiType } from '../../../types/api/AnnictApiType';
 import { useRecoilValue } from 'recoil';
-import { CurrentUser, IsSignedIn } from 'store/auth/Auth';
+import { CurrentUser } from 'store/auth/Auth';
 import { useMessage } from 'customHooks/message/useMessage';
 import { FavoriteType } from 'types/favoriteAnime/FavoriteAnimeType';
 import ReviewModal from '../reviewModal/ReviewModal';
@@ -28,7 +28,6 @@ const AnimeCard: VFC<Props> = memo((props) => {
     const { animeList } = props
     const [ isLike, setIsLike ] = useState(false)
     const currentUser = useRecoilValue(CurrentUser)
-    const isSignedIn = useRecoilValue(IsSignedIn)
     const controls = useAnimation()
     const { showMessage } = useMessage()
     const { count, rate } = useGetReviewCount(animeList.id)
@@ -38,46 +37,41 @@ const AnimeCard: VFC<Props> = memo((props) => {
     const like = useMemo(() => isLike, [isLike])
     
     const toggleLike = () => {
-        //ログインしているか確認
-        // if (currentUser && isSignedIn) {
-            //お気に入り登録済か
-            if (!like) {
-                try {
-                    const createLike = async() => {
-                        const favoriteParams: FavoriteType = {
-                            user_id: currentUser?.id,
-                            title: animeList.title,
-                            official_url: animeList.official_site_url,
-                            image_url: animeList.images.recommended_url,
-                            twitter_username: animeList.twitter_username,
-                            season: animeList.season_name_text,
-                            api_id: animeList.id,
-                            media_text: animeList.media_text,
-                        }
-            
-                        await cleateFavorite(favoriteParams)
+        //お気に入り登録済か
+        if (!like) {
+            try {
+                const createLike = async() => {
+                    const favoriteParams: FavoriteType = {
+                        user_id: currentUser?.id,
+                        title: animeList.title,
+                        official_url: animeList.official_site_url,
+                        image_url: animeList.images.recommended_url,
+                        twitter_username: animeList.twitter_username,
+                        season: animeList.season_name_text,
+                        api_id: animeList.id,
+                        media_text: animeList.media_text,
                     }
-                    createLike()
-                    setIsLike(true)
-                    controls.start({ scale: [0, 0.5, 1] })
+        
+                    await cleateFavorite(favoriteParams)
+                }
+                createLike()
+                setIsLike(true)
+                controls.start({ scale: [0, 0.5, 1] })
 
-                } catch (error) {
-                    showMessage({title: 'お気に入り登録に失敗しました', status: "error"})
-                }
-            } else {
-                try {
-                    const deleteLike = async() => {        
-                        await deleteFavorite(animeList.id)  
-                    }   
-                    deleteLike()
-                    setIsLike(false)
-                } catch (error) {
-                    showMessage({title: 'お気に入り削除に失敗しました', status: "error"})
-                }
+            } catch (error) {
+                showMessage({title: 'お気に入り登録に失敗しました', status: "error"})
             }
-        // } else {
-        //     showMessage({title: 'ログインが必要です', status: "error"})
-        // }
+        } else {
+            try {
+                const deleteLike = async() => {        
+                    await deleteFavorite(animeList.id)  
+                }   
+                deleteLike()
+                setIsLike(false)
+            } catch (error) {
+                showMessage({title: 'お気に入り削除に失敗しました', status: "error"})
+            }
+        }
     }
 
     const handleOfficialSite = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -106,7 +100,7 @@ const AnimeCard: VFC<Props> = memo((props) => {
         return () => {
             isMounted = false
         }
-    }, [like])
+    }, [animeList.id])
 
     return (
         <>

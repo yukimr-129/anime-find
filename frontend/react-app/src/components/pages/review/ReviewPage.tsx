@@ -1,4 +1,4 @@
-import { memo, useState, VFC, useEffect, useCallback, useRef } from "react";
+import { memo, useState, VFC, useEffect } from "react";
 
 import { Box, Button, Center, Image, Text, VStack } from "@chakra-ui/react";
 import { useLocation, useParams } from "react-router-dom";

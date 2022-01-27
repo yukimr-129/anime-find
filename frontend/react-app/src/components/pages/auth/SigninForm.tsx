@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack } from "@chakra-ui/react"
 import { useMessage } from "customHooks/message/useMessage";
 import Cookies from "js-cookie";
 import { signIn } from "lib/api/auth/auth";
@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { useHistory } from "react-router-dom";
 import { BeatLoader } from "react-spinners"
 import { useSetRecoilState } from "recoil";
-import { memo, useCallback, VFC } from "react";
+import { memo, VFC } from "react";
 
 import { CurrentUser, IsSignedIn } from "store/auth/Auth";
 import { SignInFormInputs } from "types/form/FormInputs";

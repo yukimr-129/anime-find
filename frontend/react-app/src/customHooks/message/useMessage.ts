@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/toast'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 type Props = {
     title: string;

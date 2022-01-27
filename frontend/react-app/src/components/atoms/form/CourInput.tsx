@@ -1,5 +1,6 @@
+import { memo, VFC } from "react"
+
 import { FormLabel, Select } from "@chakra-ui/react"
-import { VFC } from "react"
 import { useCallback } from 'react'
 import { useRecoilState } from "recoil"
 import { ApiKeyValue } from "store/ApiKeyValue"
@@ -8,7 +9,7 @@ import { useCourFactory } from "../../../customHooks/useCourFactory"
 import { Cour } from '../../../store/Cour'
 import { handleChange } from "../../../types/handleChange"
 
-const CourInput: VFC = () => {
+const CourInput: VFC = memo(() => {
     
     const { cours } = useCourFactory()
     const [ selectCour, setSelectCour ] = useRecoilState(Cour)
@@ -21,7 +22,7 @@ const CourInput: VFC = () => {
         
         setSelectCour(e.target.value)
         setApiKeyValue({...apiKeyValue, cour: select_season})
-    }, [apiKeyValue])
+    }, [ setSelectCour, apiKeyValue, setApiKeyValue])
     
     return (
         <>
@@ -33,6 +34,6 @@ const CourInput: VFC = () => {
             </Select>
         </>
     )
-}
+})
 
 export default CourInput

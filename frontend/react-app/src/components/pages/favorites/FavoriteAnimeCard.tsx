@@ -1,11 +1,11 @@
-import React, { useState, VFC, memo } from "react";
+import React, { VFC, memo } from "react";
 
 import { Box, Flex, Icon, Image, Link, Tag, Text } from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import { useMessage } from "customHooks/message/useMessage";
-import { BsHeartFill, BsHeart } from "react-icons/bs";
+import { BsHeartFill } from "react-icons/bs";
 import { FavoriteType } from "types/favoriteAnime/FavoriteAnimeType";
 import { IsFavoriteLike } from "store/IsFavoriteLike";
 import { FaTwitter } from "react-icons/fa";
@@ -18,8 +18,7 @@ type Props = {
 
 const FavoriteAnimeCard: VFC<Props> = memo((props) => {
     const { favoriteAnime } = props
-    const [ isLike, setIsLike ] = useState(true)
-    const [ isFavoriteLike, setIsFavoriteLike ] = useRecoilState(IsFavoriteLike)
+    const setIsFavoriteLike = useSetRecoilState(IsFavoriteLike)
     const controls = useAnimation()
     const { showMessage } = useMessage()
 
@@ -74,12 +73,11 @@ const FavoriteAnimeCard: VFC<Props> = memo((props) => {
                         <motion.div
                             onClick={toggleLike}
                             animate={controls}
-                            transition={!isLike ? { duration: 0.2 , ease: "easeIn"} : { duration: 0.6 , ease: "easeIn"}}
                         >
                             <Icon
-                                as={isLike ? BsHeartFill : BsHeart }
+                                as={BsHeartFill}
                                 fontSize='20px' 
-                                color={isLike ? '#FF1493': ''}
+                                color='#FF1493'
                                 cursor='pointer'
                             />
                         </motion.div>

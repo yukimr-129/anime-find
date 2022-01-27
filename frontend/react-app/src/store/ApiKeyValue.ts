@@ -1,7 +1,6 @@
 import { atom } from "recoil";
-import { useCourFactory } from "../customHooks/useCourFactory";
 
-type ApiKeyValue = {
+type ApiKeyValueType = {
     year: string | undefined;
     cour: string | undefined;
 }
@@ -19,7 +18,7 @@ const defalt_cour = cours_detail[current_cour - 1]
 const season = new Map<string, string>([['1期（冬期）', 'winter'], ['2期（春期）', 'spring'], ['3期（夏期）', 'summer'], ['4期（秋期）', 'autumn']])
 const current_season = season.get(defalt_cour)
 
-export const ApiKeyValue = atom<ApiKeyValue>({
+export const ApiKeyValue = atom<ApiKeyValueType>({
     key: 'ApiKeyValue',
     default: {year: current_year, cour: current_season}
 })

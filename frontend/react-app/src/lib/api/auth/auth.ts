@@ -1,7 +1,6 @@
 import { client } from '../client'
 import Cookies from 'js-cookie'
 import { SignInParams, SignUpParams } from 'types/auth/authTypes'
-import { EditPasswordUpdate, UserProfileUpdate } from 'types/form/FormInputs'
 
 
 // サインアップ（新規アカウント作成）

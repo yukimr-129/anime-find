@@ -1,7 +1,7 @@
-import { Box, Button, Center, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack } from "@chakra-ui/react"
 import { useForm } from "react-hook-form"
 import { BeatLoader } from "react-spinners"
-import { useRecoilState } from "recoil"
+import { useSetRecoilState } from "recoil"
 import { memo, VFC } from "react"
 
 import { useSignOut } from "customHooks/auth/useSignOut"
@@ -12,7 +12,7 @@ import { EditPasswordUpdate } from "types/form/FormInputs"
 import Head from "meta/Head"
 
 const EditPassword: VFC = memo(() => {
-    const [ currentUser, setCurrentUser ] = useRecoilState(CurrentUser)
+    const setCurrentUser = useSetRecoilState(CurrentUser)
     const { executionSignOut } = useSignOut('パスワードを更新しました。再度ログインしてください')
     const { showMessage } = useMessage()
     const { register, handleSubmit, formState: {errors}, formState, getValues } = useForm<EditPasswordUpdate>({

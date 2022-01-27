@@ -1,6 +1,6 @@
-import { VFC, useState, useCallback, ChangeEvent, memo } from "react"
+import React, { VFC, useState, ChangeEvent, memo } from "react"
 
-import { IconButton, Box, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack, Image, Center } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack, Image, Center } from "@chakra-ui/react"
 import { useForm } from "react-hook-form"
 import { MdPhotoCamera, MdCancel } from "react-icons/md";
 import { BeatLoader } from "react-spinners"
@@ -67,23 +67,27 @@ const UserProfile: VFC = memo(() => {
     }
 
     // プレビュー機能
-    const previewImage = useCallback((e) => {
-        const file = e.target.files[0]
-        setPreview(window.URL.createObjectURL(file))
-    }, [])
+    const previewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files !== null) {
+            const file = e.target.files[0]
+            setPreview(window.URL.createObjectURL(file)) 
+        }
+    }
 
     // アップロード
-    const handleUploadImage = useCallback((e) => {
-        const file = e.target.files[0]
-        setUploadImage(file)
-    }, [])
+    const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files !== null) {
+            const targetfile = e.target.files[0]
+            setUploadImage(targetfile)   
+        }
+    }
 
     // アップロード画像削除
-    const ImageDelete = useCallback(() => {
+    const ImageDelete = () => {
         setPreview('')
         setUserImage(null)
         setUploadImage(null)
-    }, [])
+    }
 
     return (
         <>
@@ -120,14 +124,11 @@ const UserProfile: VFC = memo(() => {
                                                 id="avatar"
                                                 name="image"
                                                 accept="image/*"
-                                                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                                onChange={(e) => {
                                                     handleUploadImage(e)
                                                     previewImage(e)
                                                 }}
                                             />
-                                            {/* <IconButton as='span' id="avatar" cursor='pointer' aria-label='upload picture'>
-                                                <MdPhotoCamera size='30px'/>
-                                            </IconButton> */}
                                             <Button leftIcon={<MdPhotoCamera size='25px'/>} as='span' cursor='pointer' colorScheme="teal" variant="solid">
                                                 画像をアップロード
                                             </Button>

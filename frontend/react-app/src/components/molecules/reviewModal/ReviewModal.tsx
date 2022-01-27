@@ -11,7 +11,7 @@ import { useGetSize } from "customHooks/useGetSize";
 import { createReview } from "lib/api/review/review";
 import { useMessage } from "customHooks/message/useMessage";
 import { CurrentUser, IsSignedIn } from "store/auth/Auth";
-import { Submitreview, Submitreviews } from "types/form/FormInputs";
+import { Submitreview } from "types/form/FormInputs";
 import { ReviewReflection } from "store/ReviewReflection";
 
 type  Props = {
@@ -78,7 +78,6 @@ const ReviewModal: VFC<Props> = memo((props) => {
                 onClose()
             }
         }
-        
         
     }
     

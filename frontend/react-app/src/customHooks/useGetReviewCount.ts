@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { getReviewCount } from 'lib/api/review/review'
 import { useRecoilValue } from 'recoil'
@@ -14,26 +14,28 @@ export const useGetReviewCount: ReviewCount = (id: number) => {
     const [ rate, setRate ] = useState(0)
     const reviewReflection = useRecoilValue(ReviewReflection)
 
-    const getReviewStatus = useCallback(async() => {
-        try {
-            const reviewCount = await getReviewCount(id)
-            const { review_count, average_rate } = reviewCount.data
-
-            review_count && setCount(review_count)
-            average_rate && setRate(average_rate)
-            
-        } catch (error) {
-            console.error(error)
-        }
-    }, [reviewReflection])
-
     useEffect(() => {
         let isMounted = true
+
+        const getReviewStatus = async() => {
+            try {
+                const reviewCount = await getReviewCount(id)
+                const { review_count, average_rate } = reviewCount.data
+    
+                review_count && setCount(review_count)
+                average_rate && setRate(average_rate)
+                
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
         isMounted && getReviewStatus()
+        
         return () => {
             isMounted = false
         }
-    }, [reviewReflection])
+    }, [reviewReflection, id])
 
     return { count, rate }
 }

@@ -4,7 +4,7 @@ import { useMessage } from "customHooks/message/useMessage"
 import Cookies from "js-cookie"
 import { signOut } from "lib/api/auth/auth"
 import { useHistory } from "react-router-dom"
-import { useRecoilState, useSetRecoilState } from "recoil"
+import { useSetRecoilState } from "recoil"
 
 import { CurrentUser, IsSignedIn } from "store/auth/Auth"
 import { AuthLoding } from "store/loding/AuthLoding"
@@ -33,7 +33,7 @@ export const useSignOut = (text: string) => {
     
             showMessage({title: `${text}`, status: 'info'})
         }
-    }, [])
+    }, [setCurrentUser, setIsSignedIn])
     
     return { executionSignOut }
 }

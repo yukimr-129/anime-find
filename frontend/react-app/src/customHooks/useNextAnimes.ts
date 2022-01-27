@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -24,41 +24,42 @@ export const useNextAnimes: NextAnimes = (page: number) => {
     const loadPage = useRecoilValue(LoadPage)
     const { showMessage } = useMessage()
 
-    const getNextAnimes = useCallback(async() => {        
-        try {
-            setIsLoding(true)
-            const filter_season = `${apiKeyValue.year}-${apiKeyValue.cour}`
-            const res = await client.get('/annicts/search', {
-                params: {
-                    filter_season,
-                    page
-                }
-            })
-
-            if (res.status === 200) {
-                const animeDate: AnnictApiType[] = res.data.works
-
-                //取得できるアニメがなければ続きを読み込むかの判定を変更
-                animeDate.length < 1 && setHasMore(false)
-                
-                //重複データ削除
-                const dataList = [...animeLists, ...animeDate]            
-                
-                let map = new Map(dataList.map<[number, AnnictApiType]>(data => [data.id, data]));
-                const distinctDataList = Array.from(map.values())
-    
-                setAnimeLists(distinctDataList)
-                setIsLoding(false) 
-            } else {
-                console.error('status error')
-            }
-        } catch (error) {
-            showMessage({title: 'アニメ一覧の取得に失敗しました', status: "error"})
-        }
-    },[loadPage])
-
     useEffect(() => {
         let isMounted = true
+
+        const getNextAnimes = async() => {        
+            try {
+                setIsLoding(true)
+                const filter_season = `${apiKeyValue.year}-${apiKeyValue.cour}`
+                const res = await client.get('/annicts/search', {
+                    params: {
+                        filter_season,
+                        page
+                    }
+                })
+    
+                if (res.status === 200) {
+                    const animeDate: AnnictApiType[] = res.data.works
+    
+                    //取得できるアニメがなければ続きを読み込むかの判定を変更
+                    animeDate.length < 1 && setHasMore(false)
+                    
+                    //重複データ削除
+                    const dataList = [...animeLists, ...animeDate]            
+                    
+                    let map = new Map(dataList.map<[number, AnnictApiType]>(data => [data.id, data]));
+                    const distinctDataList = Array.from(map.values())
+        
+                    setAnimeLists(distinctDataList)
+                    setIsLoding(false) 
+                } else {
+                    console.error('status error')
+                }
+            } catch (error) {
+                showMessage({title: 'アニメ一覧の取得に失敗しました', status: "error"})
+            }
+        }
+
         isMounted && getNextAnimes()
         return () => {
             isMounted = false

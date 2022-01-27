@@ -1,4 +1,4 @@
-import { memo, useCallback, VFC } from "react"
+import { memo, VFC } from "react"
 
 import { Box, Flex, Heading,  VStack, FormControl, FormLabel, Input, FormErrorMessage, Button, Divider } from "@chakra-ui/react"
 import Cookies from "js-cookie"
@@ -50,11 +50,9 @@ const SignUpForm: VFC = memo(() => {
                 setCurrentUser(res.data.data)
                 history.push({pathname: '/'})
             } else {
-                // showMessage({title: 'メールアドレスまたはパスワードが違います。', status: 'error'})
                 showMessage({title: '新規登録に失敗しました。', status: 'error'})
             }
         } catch (error) {
-            // showMessage({title: 'ログインに失敗しました。', status: 'error'})
             showMessage({title: '新規登録に失敗しました。', status: 'error'})
         }
     }

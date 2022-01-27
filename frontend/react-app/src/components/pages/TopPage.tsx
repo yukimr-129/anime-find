@@ -1,21 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import { VFC, useCallback, memo } from "react";
-import { useRecoilValue } from "recoil";
 
-import { ApiKeyValue } from "../../store/ApiKeyValue";
 import AnimeCardList from "../organisms/AnimeCardList";
 import Search from "../organisms/Search";
-import { useCourFactory } from "../../customHooks/useCourFactory";
 import { useAnimeApiSearch } from "../../customHooks/useAnimeApiSearch";
 
 
 const TopPage: VFC = memo(() => {
-    const apiKeyValue = useRecoilValue(ApiKeyValue)
     const { getAnimes } = useAnimeApiSearch()
 
     const onClickAnimeSearch = useCallback(() => {        
         getAnimes()
-    }, [apiKeyValue])
+    }, [getAnimes])
 
     return (
         <>

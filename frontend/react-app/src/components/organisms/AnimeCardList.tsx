@@ -36,7 +36,7 @@ const AnimeCardList: VFC = memo(() => {
 
         node && observer.current.observe(node)
 
-    }, [hasMore, isLoading])
+    }, [hasMore, isLoading, setLoadPage])
     
     return (
         <>

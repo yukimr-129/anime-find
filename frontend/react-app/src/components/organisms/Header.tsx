@@ -1,15 +1,12 @@
 import { memo, VFC } from "react"
 
-import { Flex, Box, Button, HStack, LinkBox } from "@chakra-ui/react"
-import { useRecoilState, useRecoilValue } from "recoil"
-import Cookies from "js-cookie"
+import { Flex, Box, Button, HStack } from "@chakra-ui/react"
+import { useRecoilValue } from "recoil"
 
 import Logo from "../atoms/header/Logo"
 import MenuBar from "../atoms/header/MenuBar"
 import { CurrentUser, IsSignedIn } from "store/auth/Auth"
-import { AuthLoding } from "store/loding/AuthLoding"
 import { useHistory } from "react-router-dom"
-import { signOut } from "lib/api/auth/auth"
 import { useMessage } from "customHooks/message/useMessage"
 import { useSignOut } from "customHooks/auth/useSignOut"
 
@@ -17,7 +14,6 @@ const Header: VFC = memo(() => {
     const history = useHistory()
     const isSignedIn = useRecoilValue(IsSignedIn)
     const currentUser = useRecoilValue(CurrentUser)
-    const [ authLoding, setAuthLoding] = useRecoilState(AuthLoding)
     const { executionSignOut } = useSignOut('ログアウトしました')
     const { showMessage } = useMessage()
 

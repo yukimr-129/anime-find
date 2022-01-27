@@ -1,7 +1,7 @@
-import { memo, useEffect, useState, VFC } from 'react'
+import { memo, useEffect, VFC } from 'react'
 
 import { Redirect, Route, Switch } from "react-router-dom"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useSetRecoilState } from "recoil"
 
 import TopPage from "../components/pages/TopPage"
 import SignUpForm from '../components/pages/auth/SignUpForm'
@@ -19,31 +19,36 @@ import Page404 from 'components/pages/error/Page404'
 const Router: VFC = memo(() => {
     const [ authLoding, setAuthLoding] = useRecoilState(AuthLoding)
     const [ isSignedIn, setIsSignedIn ] = useRecoilState(IsSignedIn)
-    const [ currentUser, setCurrentUser ] = useRecoilState(CurrentUser)
-
-    // 認証済みのユーザーがいるかどうかチェック
-    // 確認できた場合はそのユーザーの情報を取得
-    const handleGetCurrentUser = async () => {
-        try {
-        const res = await getCurrentUser()
-            
-            if (res?.data.is_login === true) {
-                setIsSignedIn(true)
-                setCurrentUser(res?.data.data)
-            } else {
-                setIsSignedIn(false)
-                setCurrentUser(undefined)
-            }
-        } catch (error) {
-            console.error(error)
-        }
-        
-        setAuthLoding(false)
-    }
+    const setCurrentUser = useSetRecoilState(CurrentUser)
 
     useEffect(() => {
+        let isMounted = true
+        // 認証済みのユーザーがいるかどうかチェック
+        // 確認できた場合はそのユーザーの情報を取得
+        const handleGetCurrentUser = async () => {
+            try {
+            const res = await getCurrentUser()
+                
+                if (res?.data.is_login === true) {
+                    setIsSignedIn(true)
+                    setCurrentUser(res?.data.data)
+                } else {
+                    setIsSignedIn(false)
+                    setCurrentUser(undefined)
+                }
+            } catch (error) {
+                console.error(error)
+            }
+            
+            setAuthLoding(false)
+        }
+
         handleGetCurrentUser()
-    }, [isSignedIn])
+
+        return () => {
+            isMounted = false
+        }
+    }, [isSignedIn, setCurrentUser])
 
     return (
         <CommonLayout>

@@ -4,7 +4,6 @@ import { Avatar, Box, Divider, Flex, Text, VStack } from "@chakra-ui/react";
 import ReactStars from "react-stars";
 
 import { AnimeReviewType } from "types/review/AnimeReviewType";
-import { useRecoilState } from "recoil";
 
 type Props = {
     review: AnimeReviewType;

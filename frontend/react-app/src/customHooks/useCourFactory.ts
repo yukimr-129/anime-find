@@ -1,7 +1,6 @@
-import { useRecoilState } from "recoil"
+import { useRecoilValue } from "recoil"
 
 import { Cour } from '../store/Cour'
-import { ApiKeyValue } from '../store/ApiKeyValue'
 
 type CourFactory = () => {
     current_cour: number;
@@ -12,7 +11,7 @@ type CourFactory = () => {
 }
 
 export const useCourFactory: CourFactory = () => {
-    const [ selectCour, setSelectCour ] = useRecoilState(Cour)
+    const selectCour = useRecoilValue(Cour)
     const cours_detail = ['1期（冬期）', '2期（春期）', '3期（夏期）', '4期（秋期）'];
     const cours_detail_month = ['冬：1～3月', '春：4～6月', '夏：7～9月', '秋：10～12月'];
 
