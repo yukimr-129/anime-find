@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'http://localhost:3000', 'https://anime-find-api.herokuapp.com/api/v1'
+    origins ENV["FRONT_BASE_URL"]
 
     resource '*',
       headers: :any,

@@ -53,8 +53,8 @@ production:
   # database: myapp_production
   # username: myapp
   # password: <%= ENV['MYAPP_DATABASE_PASSWORD'] %>
-  database: <%= ENV['MYSQL_DATABASE'] %>
-  url: <%= ENV['MYSQL_URL'] %>
-  username: <%= ENV['MYSQL_USERNAME'] %>
-  password: <%= ENV['MYSQL_PASSWORD'] %>
-  host: <%= ENV['MYSQL_HOST'] %>
+  database: <%= ENV["MYSQL_DATABASE"] %>
+  url: <%= ENV["MYSQL_URL"] %>
+  username: <%= ENV["MYSQL_USERNAME"] %>
+  password: <%= ENV["MYSQL_PASSWORD"] %>
+  host: <%= ENV["MYSQL_HOST"] %>
