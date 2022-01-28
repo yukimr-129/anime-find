@@ -22,7 +22,9 @@ const FavoriteAnimeCard: VFC<Props> = memo((props) => {
     const controls = useAnimation()
     const { showMessage } = useMessage()
 
-    const image = favoriteAnime.image_url !== '' ? favoriteAnime.image_url : `${process.env.PUBLIC_URL}/no_image.png`
+    const imageUrl = favoriteAnime.image_url.replace(/http(s)?/, 'https')
+
+    const image = imageUrl !== '' ? imageUrl : `${process.env.PUBLIC_URL}/no_image.png`
     
     const handleOfficialSite = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         e.preventDefault()

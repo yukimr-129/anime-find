@@ -32,7 +32,9 @@ const AnimeCard: VFC<Props> = memo((props) => {
     const { showMessage } = useMessage()
     const { count, rate } = useGetReviewCount(animeList.id)
 
-    const image = animeList.images.recommended_url !== '' ? animeList.images.recommended_url : `${process.env.PUBLIC_URL}/no_image.png`
+    const imageUrl = animeList.images.recommended_url.replace(/http(s)?/, 'https')
+    
+    const image = imageUrl !== '' ? imageUrl : `${process.env.PUBLIC_URL}/no_image.png`
 
     const like = useMemo(() => isLike, [isLike])
     
