@@ -2,14 +2,15 @@ import React, { memo, VFC, useState, useEffect, useMemo } from 'react'
 
 import { Image } from '@chakra-ui/image'
 import { Box, Flex, Link, Text } from '@chakra-ui/layout'
+import { CalendarIcon, ChevronDownIcon} from '@chakra-ui/icons';
 import { BsHeartFill, BsHeart } from "react-icons/bs";
 import { motion, useAnimation } from 'framer-motion';
-import { Icon, Tag } from '@chakra-ui/react';
+import { Icon, Menu, MenuButton, MenuItem, MenuList, Tag, Button } from '@chakra-ui/react';
 import { Link as RouteLink } from "react-router-dom"
 import { FaTwitter } from "react-icons/fa";
 
 import { AnnictApiType } from '../../../types/api/AnnictApiType';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { CurrentUser } from 'store/auth/Auth';
 import { useMessage } from 'customHooks/message/useMessage';
 import { FavoriteType } from 'types/favoriteAnime/FavoriteAnimeType';
@@ -19,6 +20,7 @@ import { useGetReviewCount } from 'customHooks/useGetReviewCount';
 import { IconContext } from 'react-icons/lib';
 import { cleateFavorite, confirmFavorite, deleteFavorite } from 'lib/api/favorite/favorite';
 import Head from 'meta/Head';
+import { calendarEvent } from 'store/calendar/calendarEvent';
 
 type Props = {
     animeList: AnnictApiType;
@@ -28,6 +30,7 @@ const AnimeCard: VFC<Props> = memo((props) => {
     const { animeList } = props
     const [ isLike, setIsLike ] = useState(false)
     const currentUser = useRecoilValue(CurrentUser)
+    const [ calendarEventList, setCalendarEvent ] = useRecoilState(calendarEvent)
     const controls = useAnimation()
     const { showMessage } = useMessage()
     const { count, rate } = useGetReviewCount(animeList.id)
@@ -83,6 +86,16 @@ const AnimeCard: VFC<Props> = memo((props) => {
         } else {
             showMessage({title: '公式URLが存在しません', status: 'warning'})
         }
+    }
+
+    const handleCreateEvent = () => {
+        
+        if (animeList.released_on || animeList.released_on_about){
+            setCalendarEvent(prev => [...prev, {id: String(animeList.id), title: animeList.title, event: animeList.released_on || animeList.released_on_about}])
+        }else {
+            showMessage({title: '放送日の情報がないため登録できません', status: 'warning'})
+        }
+
     }
 
     //お気に入り確認反映(初回、再レンダリング時)
@@ -151,7 +164,25 @@ const AnimeCard: VFC<Props> = memo((props) => {
                                         </Flex>
                                     </Box>
                             </RouteLink>
-                            <ReviewModal id={animeList.id} />
+                            <Menu>
+                                <MenuButton
+                                    as={Button}
+                                    size='xs' 
+                                    p={{base: 2, md: 3}} 
+                                    color="Gray 300"
+                                >
+                                    メニュー <ChevronDownIcon />
+                                </MenuButton>
+                                <MenuList>
+                                    <MenuItem >
+                                        <ReviewModal id={animeList.id} />
+                                    </MenuItem>
+                                    <MenuItem>
+                                        <Button pl={0} size='xs' leftIcon={<CalendarIcon />} variant='none' onClick={handleCreateEvent}>放映日登録</Button>
+                                    </MenuItem>
+                                </MenuList>
+                            </Menu>
+                            {/* <ReviewModal id={animeList.id} /> */}
                         </Box>
                     </Flex>
                 </Box>

@@ -43,6 +43,10 @@ const MenuBar: VFC = memo(() => {
                             <Box w="100%" p='16px 24px' _hover={{opacity: 0.8, backgroundColor: '#d7d7d8'}}>
                                 <Link to={`/like/${id}`} onClick={onClose}>お気に入りアニメ</Link>
                             </Box>
+                            <Divider />
+                            <Box w="100%" p='16px 24px' _hover={{opacity: 0.8, backgroundColor: '#d7d7d8'}}>
+                                <Link to={`/calendar/${id}`} onClick={onClose}>カレンダー</Link>
+                            </Box>
                         </DrawerBody>
                     </DrawerContent>
                 </DrawerOverlay>
