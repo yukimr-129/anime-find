@@ -15,6 +15,7 @@ import UserProfile from 'components/pages/auth/UserProfile'
 import EditPassword from 'components/pages/auth/EditPassword'
 import ReviewPage from 'components/pages/review/ReviewPage'
 import Page404 from 'components/pages/error/Page404'
+import Calendar from 'components/pages/calendar/Calendar'
 
 const Router: VFC = memo(() => {
     const [ authLoding, setAuthLoding] = useRecoilState(AuthLoding)
@@ -78,6 +79,9 @@ const Router: VFC = memo(() => {
                             )} />
                             <Route path='/edit-password/:user_id' render={() => (
                                 <EditPassword />
+                            )} />
+                            <Route path='/calendar/:user_id' render={() => (
+                                <Calendar />
                             )} />
                             <Route path='*' render={() => (
                                 <Page404 />
