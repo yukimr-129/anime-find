@@ -16,11 +16,14 @@ import EditPassword from 'components/pages/auth/EditPassword'
 import ReviewPage from 'components/pages/review/ReviewPage'
 import Page404 from 'components/pages/error/Page404'
 import Calendar from 'components/pages/calendar/Calendar'
+import { useTracking } from 'customHooks/ga/useTracking'
 
 const Router: VFC = memo(() => {
     const [ authLoding, setAuthLoding] = useRecoilState(AuthLoding)
     const [ isSignedIn, setIsSignedIn ] = useRecoilState(IsSignedIn)
     const setCurrentUser = useSetRecoilState(CurrentUser)
+    useTracking('UA-222059306-1')
+    useTracking('G-QSQHHDBG86')
 
     useEffect(() => {
         let isMounted = true
