@@ -1,6 +1,6 @@
-import React, { VFC, useState, ChangeEvent, memo } from "react"
+import React, { VFC, useState, useCallback, memo } from "react"
 
-import { Box, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack, Image, Center } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack, Image, Center, Avatar } from "@chakra-ui/react"
 import { useForm } from "react-hook-form"
 import { MdPhotoCamera, MdCancel } from "react-icons/md";
 import { BeatLoader } from "react-spinners"
@@ -28,9 +28,6 @@ const UserProfile: VFC = memo(() => {
             email: currentUser?.email,
         }
     })
-
-    // ダミー画像
-    const defaultSrc =　"https://www.pngkit.com/png/full/301-3012694_account-user-profile-avatar-comments-fa-user-circle.png";
 
     const handleUpdateProfile = async(data: UserProfileUpdate) => {
         const { name, email } = data
@@ -67,27 +64,27 @@ const UserProfile: VFC = memo(() => {
     }
 
     // プレビュー機能
-    const previewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const previewImage = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files !== null) {
             const file = e.target.files[0]
             setPreview(window.URL.createObjectURL(file)) 
         }
-    }
+    }, [])
 
     // アップロード
-    const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleUploadImage =useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files !== null) {
             const targetfile = e.target.files[0]
             setUploadImage(targetfile)   
         }
-    }
+    }, [])
 
     // アップロード画像削除
-    const ImageDelete = () => {
+    const ImageDelete = useCallback(() => {
         setPreview('')
         setUserImage(null)
         setUploadImage(null)
-    }
+    }, [])
 
     return (
         <>
@@ -105,11 +102,11 @@ const UserProfile: VFC = memo(() => {
                                             <MdCancel size='25px'/>
                                         </Box>
                                         <Box w='200px' h='200px' borderRadius='999px' mb='20px'>
-                                            <Image 
+                                            <Avatar 
                                                 src={preview ? preview : (
-                                                    userImage ?? defaultSrc
+                                                    userImage ?? ''
                                                 )} 
-                                                alt="preview img" 
+                                                alt='preview img' 
                                                 w='200px' 
                                                 h='200px' 
                                                 objectFit='cover' 
@@ -117,13 +114,13 @@ const UserProfile: VFC = memo(() => {
                                             
                                             />
                                         </Box>
-                                        <FormLabel htmlFor="avatar">
+                                        <FormLabel htmlFor='avatar'>
                                             <Input
-                                                display="none"
-                                                type="file"
-                                                id="avatar"
-                                                name="image"
-                                                accept="image/*"
+                                                display='none'
+                                                type='file'
+                                                id='avatar'
+                                                name='image'
+                                                accept='image/*'
                                                 onChange={(e) => {
                                                     handleUploadImage(e)
                                                     previewImage(e)
