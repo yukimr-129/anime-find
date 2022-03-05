@@ -1,16 +1,22 @@
+import { useState } from "react";
+
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
 import { calendarEvent } from "store/calendar/calendarEvent";
 
+
 const Calendar = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [ dayText, setDayText ] = useState('')
     const calendarEventList = useRecoilValue(calendarEvent)
 
     const handleDateClick = useCallback((arg: DateClickArg) => {
-        alert(arg.dateStr);
+        setDayText(arg.dateStr)
+        onOpen()
     }, [])
 
     const schedule = [
@@ -31,6 +37,24 @@ const Calendar = () => {
                     events={calendarEventList}
                 />
                 {console.log(calendarEventList)}
+                <Modal
+                    onClose={onClose}
+                    // finalFocusRef={btnRef}
+                    isOpen={isOpen}
+                    scrollBehavior='outside'
+                >
+                    <ModalOverlay />
+                    <ModalContent>
+                    <ModalHeader>Modal Title</ModalHeader>
+                    {/* <ModalCloseButton /> */}
+                    <ModalBody>
+                        <Text>{dayText}</Text>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button onClick={onClose}>Close</Button>
+                    </ModalFooter>
+                    </ModalContent>
+                </Modal>
             </Box>
         </Flex>
     )

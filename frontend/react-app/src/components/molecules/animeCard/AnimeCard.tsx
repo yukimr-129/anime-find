@@ -34,7 +34,7 @@ const AnimeCard: VFC<Props> = memo((props) => {
     const controls = useAnimation()
     const { showMessage } = useMessage()
     const { count, rate } = useGetReviewCount(animeList.id)
-
+    
     const imageUrl = animeList.images.recommended_url
     
     const image = imageUrl !== '' && imageUrl.match(/https/) ? imageUrl : `${process.env.PUBLIC_URL}/no_image.png`
@@ -89,9 +89,11 @@ const AnimeCard: VFC<Props> = memo((props) => {
     }
 
     const handleCreateEvent = () => {
-        
-        if (animeList.released_on || animeList.released_on_about){
-            setCalendarEvent(prev => [...prev, {id: String(animeList.id), title: animeList.title, event: animeList.released_on || animeList.released_on_about}])
+        const lists = [...calendarEventList, {id: String(animeList.id), title: animeList.title, event: animeList.released_on || animeList.released_on_about}]
+        const distinctList = new Map(lists.map((list) => [list.id, list]))
+        // setCalendarEvent(Array.from(disitictList.values()))
+        if (animeList.released_on || animeList.released_on_about){ 
+            setCalendarEvent(Array.from(distinctList.values()))
         }else {
             showMessage({title: '放送日の情報がないため登録できません', status: 'warning'})
         }
@@ -164,7 +166,7 @@ const AnimeCard: VFC<Props> = memo((props) => {
                                         </Flex>
                                     </Box>
                             </RouteLink>
-                            <Menu>
+                            {/* <Menu>
                                 <MenuButton
                                     as={Button}
                                     size='xs' 
@@ -181,8 +183,8 @@ const AnimeCard: VFC<Props> = memo((props) => {
                                         <Button pl={0} size='xs' leftIcon={<CalendarIcon />} variant='none' onClick={handleCreateEvent}>放映日登録</Button>
                                     </MenuItem>
                                 </MenuList>
-                            </Menu>
-                            {/* <ReviewModal id={animeList.id} /> */}
+                            </Menu> */}
+                            <ReviewModal id={animeList.id} />
                         </Box>
                     </Flex>
                 </Box>

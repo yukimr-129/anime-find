@@ -37,6 +37,9 @@
 # Ignore bundler config.
 /backend/.bundle
 
+# image
+/backend/public/uploads
+
 # Ignore all logfiles and tempfiles.
 /backend/.env
 /backend/log/*
